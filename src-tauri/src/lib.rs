@@ -1,0 +1,17 @@
+// Result<T, E> becomes a resolved/rejected Promise on the TypeScript side.
+#[tauri::command]
+fn greet(name: &str) -> Result<String, String> {
+    let name = name.trim();
+    if name.is_empty() {
+        return Err("请输入你的名字。".to_string());
+    }
+    Ok(format!("你好，{name}！欢迎开始 TallyRep 的开发。"))
+}
+
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![greet])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
