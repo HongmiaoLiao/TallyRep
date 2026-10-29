@@ -133,6 +133,10 @@ Exercise 表示动作定义。category 继续区分 strength 和 cardio；另设
 
 内置动作由一份版本化的 catalog 文件提供，原生数据库和 Web 种子数据均从这里初始化，停止维护 Rust 与 TypeScript 两套手写列表。内置动作使用稳定 ID 与 seedKey；首版采用人工审阅的少量动作，图片与动作内容来源需要可发布的使用权。
 
+2026-10-29 确定采用 [hasaneyldrm/exercises-dataset](https://github.com/hasaneyldrm/exercises-dataset) 的非媒体数据作为上游来源。导入时固定 commit，保留原始来源 ID、许可证及改动记录；补充中文动作名、别名和 metricKind。上游 category/body_part 表示身体部位，不直接映射成本项目的 strength/cardio。先选取审核后的动作子集，检查重复、字段和中文说明，再生成 catalog；当前尚未导入数据。
+
+代码、数据结构和说明文字按上游 MIT 声明处理，保留版权和许可文本；images/videos 明确不在该 MIT 授权内。图片与 GIF 的 Gym visual 授权单独确认，不能凭克隆仓库或保留署名就发布。取得适用于客户端离线打包、Web 展示及相应分发方式的许可后，才能将媒体纳入产物；原始素材不自动提交到公开仓库。每个素材保留来源、作者、许可版本及审核状态，审核从导入阶段开始。[上游 LICENSE](https://github.com/hasaneyldrm/exercises-dataset/blob/main/LICENSE)、[NOTICE](https://github.com/hasaneyldrm/exercises-dataset/blob/main/NOTICE.md)
+
 ### 实体关系
 
 | 实体 | 核心字段与职责 |

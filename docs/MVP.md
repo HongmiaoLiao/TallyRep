@@ -16,6 +16,7 @@
 - Web 使用示例数据，提供完整交互演示，通过 GitHub Pages 展示。
 - 继续使用 Vue 3、TypeScript、Tauri 2、Rust 和 npm。
 - 用户自行配置模型 URL、模型名及 API 密钥，客户端直接调用；第一版不增加服务端。AI 范围确定为训练后复盘、下一次建议及用户确认后调整计划。
+- 动作目录采用 `hasaneyldrm/exercises-dataset` 的非媒体数据作为来源，经版本固定、字段转换与内容审核后导入；当前尚未导入。图片和 GIF 需要独立的 Gym visual 许可，不随 MIT 数据授权自动获得。
 
 ## 建议的第一版使用流程
 
