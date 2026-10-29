@@ -27,7 +27,6 @@ dist-ssr
 
 # Local collaboration context and personal notes
 /AGENTS.md
-/docs/PROGRESS.md
 /.local/
 /.codex/
 /.agents/
