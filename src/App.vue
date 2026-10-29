@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { greet, runtime } from "./services/greeting";
+import type { Exercise } from "./types/exercise";
+import { listExercises } from "./services/exercises";
 
 const name = ref("");
 const message = ref("");
@@ -21,6 +23,29 @@ async function submitGreeting() {
     pending.value = false;
   }
 }
+
+const exercises = ref<Exercise[]>([])
+const exercisesLoading = ref(true)
+const exercisesError = ref("")
+
+async function loadExercises() {
+  exercisesLoading.value = true;
+  exercisesError.value = "";
+
+  try {
+    exercises.value = await listExercises();
+  } catch (cause) {
+    exercisesError.value = cause instanceof Error ? cause.message : String(cause);
+  } finally {
+    exercisesLoading.value = false;
+  }
+
+}
+
+onMounted(() => {
+  void loadExercises();
+})
+
 </script>
 
 <template>
@@ -36,26 +61,70 @@ async function submitGreeting() {
         <p class="lead">把一个想法，变成可以运行的应用。<br />你的 Vue、TypeScript 与 Rust 之旅从这里开始。</p>
       </section>
       <section class="demo" aria-labelledby="demo-title">
-        <div class="section-heading"><span class="step">01</span><div><h2 id="demo-title">试着打个招呼</h2><p>输入名字，完成第一次交互。</p></div></div>
+        <div class="section-heading"><span class="step">01</span>
+          <div>
+            <h2 id="demo-title">试着打个招呼</h2>
+            <p>输入名字，完成第一次交互。</p>
+          </div>
+        </div>
         <form @submit.prevent="submitGreeting">
           <label for="name">你的名字</label>
           <div class="form-row">
-            <input id="name" v-model="name" name="name" autocomplete="given-name" placeholder="例如：小廖" :aria-invalid="!!error" aria-describedby="greeting-status" />
-            <button type="submit" :disabled="pending">{{ pending ? '正在问候…' : '发送问候' }}<span aria-hidden="true">↗</span></button>
+            <input id="name" v-model="name" name="name" autocomplete="given-name" placeholder="例如：小廖"
+              :aria-invalid="!!error" aria-describedby="greeting-status" />
+            <button type="submit" :disabled="pending">{{ pending ? '正在问候…' : '发送问候' }}<span
+                aria-hidden="true">↗</span></button>
           </div>
         </form>
-        <div id="greeting-status" class="result" :class="{ success: message, error: error }" role="status" aria-live="polite">
+        <div id="greeting-status" class="result" :class="{ success: message, error: error }" role="status"
+          aria-live="polite">
           <template v-if="error">{{ error }}</template>
           <template v-else-if="message"><span class="result-label">收到回复</span>{{ message }}</template>
           <template v-else>准备好了，等待你的第一条问候。</template>
         </div>
-        <p class="source">本次运行使用 <strong>{{ source }}</strong>{{ runtime === 'web' ? ' · 网页演示无需安装客户端' : ' · 通过 Tauri 调用本地 Rust 函数' }}</p>
+        <p class="source">本次运行使用 <strong>{{ source }}</strong>{{ runtime === 'web' ? ' · 网页演示无需安装客户端' : ' · 通过 Tauri调用本地 Rust 函数' }}</p>
       </section>
       <section class="platforms" aria-label="项目方向">
-        <article><span class="platform-index">01 / WEB</span><h3>打开即可体验</h3><p>共享界面，可构建为 GitHub Pages 演示。</p></article>
-        <article><span class="platform-index">02 / DESKTOP</span><h3>在桌面上开发</h3><p>连接 Rust，在 Windows 上验证完整交互。</p></article>
-        <article><span class="platform-index">03 / ANDROID</span><h3>下一站，移动端</h3><p>随项目成长，再接入安卓设备进行验证。</p></article>
+        <article><span class="platform-index">01 / WEB</span>
+          <h3>打开即可体验</h3>
+          <p>共享界面，可构建为 GitHub Pages 演示。</p>
+        </article>
+        <article><span class="platform-index">02 / DESKTOP</span>
+          <h3>在桌面上开发</h3>
+          <p>连接 Rust，在 Windows 上验证完整交互。</p>
+        </article>
+        <article><span class="platform-index">03 / ANDROID</span>
+          <h3>下一站，移动端</h3>
+          <p>随项目成长，再接入安卓设备进行验证。</p>
+        </article>
       </section>
+      <section class="demo" aria-labelledby="exercise-title">
+        <h2 id="exercise-title">动作库</h2>
+        <p v-if="exercisesLoading" role="status">
+          loading...
+        </p>
+
+        <div v-else-if="exercisesError" role=alert>
+          <p>加载失败：{{ exercisesError }}</p>
+          <button type="button" @click="loadExercises">
+            重试
+          </button>
+        </div>
+
+        <template v-else>
+          <p>共 {{ exercises.length }} 个动作</p>
+          <ul>
+            <li v-for="exercise in exercises" :key="exercise.id">
+              <strong>{{ exercise.name }}</strong>
+              <span>
+                {{ exercise.category === "strength" ? "力量训练" : "有氧训练" }}
+              </span>
+            </li>
+          </ul>
+        </template>
+
+      </section>
+
     </main>
     <footer><span>TallyRep · 开发起点</span><span>Vue 3 / TypeScript / Tauri 2</span></footer>
   </div>

@@ -2,6 +2,10 @@
 
 Vue 3 + TypeScript + Vite + Tauri 2 的学习与开发工程。日常开发先使用 Web 和 Windows，之后验证 Android。
 
+产品方向是力量与有氧训练记录及 AI 教练，详见 [产品与 MVP](docs/MVP.md)。当前代码已有问候与动作列表调用，计划、训练持久化及 AI 尚未实现。
+
+正式开发依据 [整体架构](docs/ARCHITECTURE.md) 和 [交付计划与首个任务](docs/DELIVERY.md) 推进。助手负责架构与评审，用户负责实现；第一版 AI 使用用户自配 URL、模型和密钥，不增加服务端。
+
 继续开发前可阅读 [当前进度](docs/PROGRESS.md)；协作方式与工程约定见 [AGENTS.md](AGENTS.md)。
 
 ## 启动
