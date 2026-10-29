@@ -24,3 +24,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local collaboration context and personal notes
+/AGENTS.md
+/docs/PROGRESS.md
+/.local/
+/.codex/
+/.agents/
+
+# Local environment values; examples must contain placeholders only
+.env
+.env.*
+!.env.example
+!.env.*.example
