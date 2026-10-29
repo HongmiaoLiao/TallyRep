@@ -1,12 +1,14 @@
 # TallyRep
 
-Vue 3 + TypeScript + Vite + Tauri 2 的学习与开发工程。日常开发先使用 Web 和 Windows，之后验证 Android。
+面向力量与有氧训练的跨平台应用，使用 Vue 3、TypeScript、Vite、Tauri 2 与 Rust。优先开发 Windows 客户端与 Web 演示，之后验证 Android。
 
 产品方向是力量与有氧训练记录及 AI 教练，详见 [产品与 MVP](docs/MVP.md)。当前代码已有问候与动作列表调用，计划、训练持久化及 AI 尚未实现。
 
-正式开发依据 [整体架构](docs/ARCHITECTURE.md) 和 [交付计划与首个任务](docs/DELIVERY.md) 推进。助手负责架构与评审，用户负责实现；第一版 AI 使用用户自配 URL、模型和密钥，不增加服务端。
+正式开发依据 [整体架构](docs/ARCHITECTURE.md) 和 [交付计划与首个任务](docs/DELIVERY.md) 推进。第一版 AI 使用用户自配 URL、模型和密钥，不增加服务端。
 
-继续开发前可阅读 [当前进度](docs/PROGRESS.md)；协作方式与工程约定见 [AGENTS.md](AGENTS.md)。
+[团队分工与排期](docs/SCHEDULE.md) 给出岗位责任、工作量、依赖和里程碑。它基于假设的人力容量，实际执行需按人员与日历重新估算。
+
+分支、评审、验证与提交要求见 [贡献指南](CONTRIBUTING.md)。当前任务状态以交付计划及对应 PR 的验收证据为准。
 
 ## 启动
 
@@ -46,14 +48,14 @@ npm run tauri dev    # 自动启动 Vite，再编译并打开客户端
 2. `src/main.ts` 创建 Vue 应用，挂载 `App.vue` 并引入全局样式。
 3. `src/App.vue` 使用 `<script setup lang="ts">`：`ref` 保存状态，`v-model` 绑定输入，`@submit.prevent` 处理表单。
 4. `src/services/greeting.ts` 是平台边界：Tauri 内使用 `invoke("greet", { name })`，浏览器中提供同接口的本地实现。
-5. `src-tauri/src/lib.rs` 的 `#[tauri::command]` 声明 Rust 命令，`generate_handler![greet]` 将它注册。`Result` 的错误会成为前端 Promise 的拒绝。
+5. `src-tauri/src/lib.rs` 的 `#[tauri::command]` 声明 Rust 命令，`generate_handler![greet, list_exercises]` 注册问候与动作列表。`src/services/exercises.ts` 负责列表的平台分流；命令返回 `Result` 时，错误会成为前端 Promise 的拒绝。
 6. `src-tauri/src/main.rs` 是桌面可执行程序入口；公共启动逻辑在 `lib.rs`，便于移动端复用。
 
 浏览器演示不会执行 Rust，也不会自动和客户端同步数据。Rust 端仍独立验证输入，因为前端验证不能代替原生边界的验证。
 
 ## 配置之间的关系
 
-- `package.json`：前端依赖与 npm 命令；`Cargo.toml`：Rust crate 与依赖，作用可类比 Go 的 `go.mod`。
+- `package.json`：前端依赖与 npm 命令；`src-tauri/Cargo.toml`：Rust crate 与依赖。
 - `tsconfig.json`：启用严格类型检查；`tsconfig.node.json` 检查运行于 Node.js 的 Vite 配置。
 - `vite.config.ts`：Vue 插件、固定端口 1420、移动调试主机、Web 发布路径。忽略 `src-tauri` 的文件变化，Rust 的重编译交给 Tauri。
 - `src-tauri/tauri.conf.json`：应用名称、标识、窗口、构建入口和 CSP。`devUrl` 对应 Vite 地址；`frontendDist` 相对于 `src-tauri`，指向 `../dist`。

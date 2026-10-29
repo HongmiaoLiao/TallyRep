@@ -1,0 +1,575 @@
+{
+  "version": "0.1",
+  "baselineDate": "2026-10-29",
+  "startDate": "2026-11-02",
+  "timezone": "Asia/Shanghai",
+  "workdaysPerWeek": 5,
+  "hoursPerPersonPerDay": 2,
+  "plannedHoursPerPersonPerWeek": 8,
+  "maximumHoursPerPersonPerWeek": 10,
+  "baselineWeeks": 17,
+  "reserveWeek": 18,
+  "calendarExclusions": "周末不排期；未扣除法定节假日和个人请假，日期为占位，执行前按实际日历调整。",
+  "roles": [
+    {
+      "id": "P",
+      "name": "产品与交互",
+      "headcount": 1,
+      "responsibility": "需求拆分、线框、验收场景、范围控制",
+      "plannedHours": 62
+    },
+    {
+      "id": "A",
+      "name": "架构与技术负责人",
+      "headcount": 1,
+      "responsibility": "契约、架构决策、技术评审、集成与风险",
+      "plannedHours": 90
+    },
+    {
+      "id": "F1",
+      "name": "前端业务工程师",
+      "headcount": 1,
+      "responsibility": "动作、计划、训练、历史主流程",
+      "plannedHours": 90
+    },
+    {
+      "id": "F2",
+      "name": "前端平台与演示工程师",
+      "headcount": 1,
+      "responsibility": "服务适配、Web 演示、AI 界面、Pages",
+      "plannedHours": 94
+    },
+    {
+      "id": "R1",
+      "name": "Rust 数据与领域工程师",
+      "headcount": 1,
+      "responsibility": "领域规则、SQLite、事务、迁移、恢复",
+      "plannedHours": 106
+    },
+    {
+      "id": "R2",
+      "name": "Rust 集成与客户端工程师",
+      "headcount": 1,
+      "responsibility": "模型协议、密钥库、网络、Android 与打包",
+      "plannedHours": 94
+    },
+    {
+      "id": "Q",
+      "name": "测试与发布质量工程师",
+      "headcount": 1,
+      "responsibility": "CI、测试设计、回归、验收证据",
+      "plannedHours": 124
+    },
+    {
+      "id": "C",
+      "name": "动作内容与数据工程师",
+      "headcount": 1,
+      "responsibility": "上游来源、许可记录、字段映射、中文和样例审核",
+      "plannedHours": 20
+    }
+  ],
+  "tasks": [
+    {
+      "id": "TR-001",
+      "name": "领域契约与交互定义",
+      "startWeek": 1,
+      "endWeek": 2,
+      "owner": "A",
+      "depends": [],
+      "allocations": {
+        "1": {
+          "A": 4,
+          "P": 2,
+          "R1": 4,
+          "F1": 2,
+          "Q": 2,
+          "C": 2
+        },
+        "2": {
+          "A": 4,
+          "P": 2,
+          "R1": 4,
+          "F1": 2,
+          "Q": 2,
+          "C": 2
+        }
+      },
+      "hours": 32
+    },
+    {
+      "id": "TR-002",
+      "name": "现有链路验收与质量基线",
+      "startWeek": 1,
+      "endWeek": 2,
+      "owner": "Q",
+      "depends": [],
+      "allocations": {
+        "1": {
+          "Q": 6,
+          "F2": 4,
+          "R2": 4,
+          "A": 2
+        },
+        "2": {
+          "Q": 6,
+          "F2": 4,
+          "R2": 4,
+          "A": 2
+        }
+      },
+      "hours": 32
+    },
+    {
+      "id": "TR-003",
+      "name": "Rust 模块与 SQLite 验证",
+      "startWeek": 3,
+      "endWeek": 3,
+      "owner": "R1",
+      "depends": [
+        "TR-001"
+      ],
+      "allocations": {
+        "3": {
+          "R1": 8,
+          "R2": 6,
+          "Q": 6,
+          "A": 2
+        }
+      },
+      "hours": 22
+    },
+    {
+      "id": "TR-004",
+      "name": "正式布局与服务适配",
+      "startWeek": 3,
+      "endWeek": 3,
+      "owner": "F1",
+      "depends": [
+        "TR-001",
+        "TR-002"
+      ],
+      "allocations": {
+        "3": {
+          "F1": 8,
+          "F2": 8,
+          "P": 4,
+          "A": 2,
+          "Q": 2
+        }
+      },
+      "hours": 24
+    },
+    {
+      "id": "TR-005",
+      "name": "动作数据审核导入与列表",
+      "startWeek": 4,
+      "endWeek": 4,
+      "owner": "C",
+      "depends": [
+        "TR-003",
+        "TR-004"
+      ],
+      "allocations": {
+        "4": {
+          "R1": 6,
+          "F1": 6,
+          "F2": 4,
+          "C": 8,
+          "Q": 4,
+          "A": 2
+        }
+      },
+      "hours": 30
+    },
+    {
+      "id": "TR-006",
+      "name": "计划编辑与持久化",
+      "startWeek": 5,
+      "endWeek": 6,
+      "owner": "R1",
+      "depends": [
+        "TR-005"
+      ],
+      "allocations": {
+        "5": {
+          "R1": 8,
+          "F1": 8,
+          "F2": 4,
+          "P": 2,
+          "Q": 6,
+          "A": 2
+        },
+        "6": {
+          "R1": 8,
+          "F1": 8,
+          "F2": 4,
+          "P": 2,
+          "Q": 6,
+          "A": 2
+        }
+      },
+      "hours": 60
+    },
+    {
+      "id": "TR-007",
+      "name": "训练状态机与计划快照",
+      "startWeek": 7,
+      "endWeek": 7,
+      "owner": "R1",
+      "depends": [
+        "TR-006"
+      ],
+      "allocations": {
+        "7": {
+          "R1": 8,
+          "F1": 6,
+          "Q": 6,
+          "A": 2
+        }
+      },
+      "hours": 22
+    },
+    {
+      "id": "TR-008",
+      "name": "组记录与中断恢复",
+      "startWeek": 8,
+      "endWeek": 9,
+      "owner": "R1",
+      "depends": [
+        "TR-007"
+      ],
+      "allocations": {
+        "8": {
+          "R1": 8,
+          "F1": 8,
+          "F2": 4,
+          "Q": 6,
+          "A": 2
+        },
+        "9": {
+          "R1": 8,
+          "F1": 8,
+          "F2": 4,
+          "Q": 6,
+          "A": 2
+        }
+      },
+      "hours": 56
+    },
+    {
+      "id": "TR-009",
+      "name": "完成训练与历史更正",
+      "startWeek": 10,
+      "endWeek": 10,
+      "owner": "R1",
+      "depends": [
+        "TR-008"
+      ],
+      "allocations": {
+        "10": {
+          "R1": 8,
+          "F1": 8,
+          "F2": 6,
+          "Q": 8,
+          "A": 2,
+          "P": 2
+        }
+      },
+      "hours": 34
+    },
+    {
+      "id": "TR-010",
+      "name": "备份与恢复",
+      "startWeek": 11,
+      "endWeek": 11,
+      "owner": "R1",
+      "depends": [
+        "TR-009"
+      ],
+      "allocations": {
+        "11": {
+          "R1": 8,
+          "F1": 4,
+          "Q": 6,
+          "A": 2
+        }
+      },
+      "hours": 20
+    },
+    {
+      "id": "TR-011",
+      "name": "密钥库与模型协议验证",
+      "startWeek": 4,
+      "endWeek": 5,
+      "owner": "R2",
+      "depends": [
+        "TR-003"
+      ],
+      "allocations": {
+        "4": {
+          "R2": 8,
+          "Q": 2,
+          "A": 2
+        },
+        "5": {
+          "R2": 8,
+          "Q": 2,
+          "A": 2
+        }
+      },
+      "hours": 24
+    },
+    {
+      "id": "TR-012",
+      "name": "模型配置与请求生命周期",
+      "startWeek": 6,
+      "endWeek": 7,
+      "owner": "R2",
+      "depends": [
+        "TR-011"
+      ],
+      "allocations": {
+        "6": {
+          "R2": 8,
+          "F2": 4,
+          "Q": 2,
+          "A": 2
+        },
+        "7": {
+          "R2": 8,
+          "F2": 8,
+          "Q": 2,
+          "A": 2
+        }
+      },
+      "hours": 36
+    },
+    {
+      "id": "TR-013",
+      "name": "复盘编排与响应校验",
+      "startWeek": 11,
+      "endWeek": 12,
+      "owner": "R2",
+      "depends": [
+        "TR-009",
+        "TR-012"
+      ],
+      "allocations": {
+        "11": {
+          "R2": 8,
+          "F2": 6,
+          "A": 2,
+          "C": 2,
+          "P": 2
+        },
+        "12": {
+          "R2": 8,
+          "F2": 6,
+          "R1": 4,
+          "Q": 8,
+          "A": 2,
+          "C": 2
+        }
+      },
+      "hours": 50
+    },
+    {
+      "id": "TR-014",
+      "name": "建议预览与计划变更",
+      "startWeek": 13,
+      "endWeek": 14,
+      "owner": "R2",
+      "depends": [
+        "TR-013"
+      ],
+      "allocations": {
+        "13": {
+          "R1": 6,
+          "R2": 4,
+          "F2": 6,
+          "F1": 2,
+          "Q": 6,
+          "A": 2,
+          "P": 2
+        },
+        "14": {
+          "R1": 6,
+          "R2": 4,
+          "F2": 6,
+          "F1": 2,
+          "Q": 6,
+          "A": 2,
+          "P": 2
+        }
+      },
+      "hours": 56
+    },
+    {
+      "id": "TR-015",
+      "name": "Web 全流程验收与 Pages",
+      "startWeek": 15,
+      "endWeek": 15,
+      "owner": "F2",
+      "depends": [
+        "TR-010",
+        "TR-014"
+      ],
+      "allocations": {
+        "15": {
+          "F2": 8,
+          "F1": 6,
+          "Q": 6,
+          "C": 4,
+          "P": 2,
+          "A": 2
+        }
+      },
+      "hours": 28
+    },
+    {
+      "id": "TR-016",
+      "name": "Android 与发布候选验收",
+      "startWeek": 15,
+      "endWeek": 17,
+      "owner": "R2",
+      "depends": [
+        "TR-014"
+      ],
+      "allocations": {
+        "15": {
+          "R2": 8,
+          "R1": 4,
+          "Q": 2,
+          "P": 2,
+          "A": 2
+        },
+        "16": {
+          "R2": 8,
+          "R1": 4,
+          "F1": 6,
+          "F2": 4,
+          "Q": 8,
+          "P": 2,
+          "A": 2
+        },
+        "17": {
+          "R2": 8,
+          "R1": 4,
+          "F1": 6,
+          "F2": 4,
+          "Q": 8,
+          "P": 2,
+          "A": 2
+        }
+      },
+      "hours": 86
+    },
+    {
+      "id": "MGMT",
+      "name": "计划维护与跨任务评审",
+      "startWeek": 1,
+      "endWeek": 17,
+      "owner": "A",
+      "depends": [],
+      "allocations": {
+        "1": {
+          "A": 2,
+          "P": 2
+        },
+        "2": {
+          "A": 2,
+          "P": 2
+        },
+        "3": {
+          "A": 2,
+          "P": 2
+        },
+        "4": {
+          "A": 2,
+          "P": 2
+        },
+        "5": {
+          "A": 2,
+          "P": 2
+        },
+        "6": {
+          "A": 2,
+          "P": 2
+        },
+        "7": {
+          "A": 2,
+          "P": 2
+        },
+        "8": {
+          "A": 2,
+          "P": 2
+        },
+        "9": {
+          "A": 2,
+          "P": 2
+        },
+        "10": {
+          "A": 2,
+          "P": 2
+        },
+        "11": {
+          "A": 2,
+          "P": 2
+        },
+        "12": {
+          "A": 2,
+          "P": 2
+        },
+        "13": {
+          "A": 2,
+          "P": 2
+        },
+        "14": {
+          "A": 2,
+          "P": 2
+        },
+        "15": {
+          "A": 2,
+          "P": 2
+        },
+        "16": {
+          "A": 2,
+          "P": 2
+        },
+        "17": {
+          "A": 2,
+          "P": 2
+        }
+      },
+      "hours": 68
+    }
+  ],
+  "plannedTotalHours": 680,
+  "milestones": [
+    {
+      "id": "M0",
+      "week": 3,
+      "targetDate": "2026-11-20"
+    },
+    {
+      "id": "M1",
+      "week": 6,
+      "targetDate": "2026-12-11"
+    },
+    {
+      "id": "M2",
+      "week": 11,
+      "targetDate": "2027-01-15"
+    },
+    {
+      "id": "M3",
+      "week": 14,
+      "targetDate": "2027-02-05"
+    },
+    {
+      "id": "M4",
+      "week": 17,
+      "targetDate": "2027-02-26"
+    }
+  ]
+}
